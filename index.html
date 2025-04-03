@@ -84,6 +84,8 @@
 </head>
 <body>
   <button class="mode-toggle" onclick="toggleDarkMode()">🌓</button>
+
+  <!-- 👇 Atualize o caminho se o nome estiver diferente -->
   <img src="sourev-logo.png" alt="Sourev Logo" class="logo" />
   <h1>Simulador de Parcelas<br>Revendedora SOUREV</h1>
 
@@ -107,30 +109,4 @@
   <script>
     function toggleDarkMode() {
       document.body.classList.toggle("dark");
-      localStorage.setItem("modo", document.body.classList.contains("dark") ? "dark" : "light");
-    }
-
-    if (localStorage.getItem("modo") === "dark") {
-      document.body.classList.add("dark");
-    }
-
-    function calcular() {
-      const valor = parseFloat(document.getElementById("valor").value);
-      const n = parseInt(document.getElementById("parcelas").value);
-      const juros = 0.085;
-
-      if (!valor || valor <= 0 || n <= 0) {
-        document.getElementById("resultado").innerHTML = "<p>Preencha corretamente os campos.</p>";
-        return;
-      }
-
-      const parcela = (valor * juros) / (1 - Math.pow(1 + juros, -n));
-      document.getElementById("resultado").innerHTML = `
-        <p><strong>🧾 Simulação:</strong></p>
-        <p>Parcela fixa: <strong>R$ ${parcela.toFixed(2)}</strong> (${n}x)</p>
-        <p>Taxa: 8,5% a.m.</p>
-      `;
-    }
-  </script>
-</body>
-</html>
+      localStorage.setItem("modo", document.body
