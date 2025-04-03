@@ -67,8 +67,8 @@
   <h1>Simulador de Parcelas<br>e Margem da Revendedora</h1>
 
   <div class="alerta">
-    🕒 <strong>Observação:</strong> a primeira parcela vence <strong>45 dias após a compra</strong>.<br>
-    O valor da parcela já considera essa carência embutida nos juros (1,5 mês).
+    🕒 <strong>Observação:</strong> a primeira parcela vence <strong>30 dias após a compra</strong>.<br>
+    A simulação considera uma carência de <strong>15 dias</strong> (meio mês) embutida nos juros.
   </div>
 
   <label>Valor de Compra na SOUREV (R$):</label>
@@ -108,7 +108,7 @@
       }
 
       const valorComIOF = valor * (1 + iof);
-      const valorCorrigido = valorComIOF * Math.pow(1 + juros, 1.5); // carência de 45 dias
+      const valorCorrigido = valorComIOF * Math.pow(1 + juros, 0.5); // carência de 15 dias
       const parcela = (valorCorrigido * juros) / (1 - Math.pow(1 + juros, -n));
       const totalPago = parcela * n;
       const lucro = venda - totalPago;
@@ -117,7 +117,7 @@
       mensagemWp = `🧾 *Simulação SOUREV*:\nParcela: R$ ${parcela.toFixed(2)} (${n}x)\nTotal pago: R$ ${totalPago.toFixed(2)}\nLucro líquido: R$ ${lucro.toFixed(2)}\nMargem: ${margem.toFixed(2)}%`;
 
       document.getElementById("resultado").innerHTML = `
-        <p><strong>Parcela (com 45 dias de carência):</strong> R$ ${parcela.toFixed(2)} (${n}x)</p>
+        <p><strong>Parcela (1ª em 30 dias):</strong> R$ ${parcela.toFixed(2)} (${n}x)</p>
         <p><strong>Total pago (com IOF e juros):</strong> R$ ${totalPago.toFixed(2)}</p>
         <p><strong>Lucro líquido:</strong> R$ ${lucro.toFixed(2)}</p>
         <p><strong>Margem sobre custo:</strong> ${margem.toFixed(2)}%</p>
