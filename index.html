@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <title>Simulador de Parcelas - Revendedora SOUREV</title>
+  <title>Simulador - Margem de Lucro Revendedora SOUREV</title>
   <style>
     :root {
       --bg: #f9f9f9;
@@ -83,14 +83,17 @@
   </style>
 </head>
 <body>
+
   <button class="mode-toggle" onclick="toggleDarkMode()">🌓</button>
-
-  <!-- 👇 Atualize o caminho se o nome estiver diferente -->
   <img src="sourev-logo.png" alt="Sourev Logo" class="logo" />
-  <h1>Simulador de Parcelas<br>Revendedora SOUREV</h1>
+  <h1>Simulador de Parcelas<br>e Margem da Revendedora</h1>
 
-  <label>Valor da Compra (R$):
+  <label>Valor de Compra na SOUREV (R$):
     <input type="number" id="valor" placeholder="Ex: 1000" />
+  </label>
+
+  <label>Valor de Venda ao Cliente (R$):
+    <input type="number" id="venda" placeholder="Ex: 2000" />
   </label>
 
   <label>Número de Parcelas:
@@ -101,7 +104,7 @@
     </select>
   </label>
 
-  <button onclick="calcular()">Calcular Parcela</button>
+  <button onclick="calcular()">Calcular</button>
   <button onclick="window.print()">📄 Exportar PDF</button>
 
   <div id="resultado"></div>
@@ -109,4 +112,38 @@
   <script>
     function toggleDarkMode() {
       document.body.classList.toggle("dark");
-      localStorage.setItem("modo", document.body
+      localStorage.setItem("modo", document.body.classList.contains("dark") ? "dark" : "light");
+    }
+
+    if (localStorage.getItem("modo") === "dark") {
+      document.body.classList.add("dark");
+    }
+
+    function calcular() {
+      const valor = parseFloat(document.getElementById("valor").value);
+      const venda = parseFloat(document.getElementById("venda").value);
+      const n = parseInt(document.getElementById("parcelas").value);
+      const juros = 0.085;
+
+      if (!valor || !venda || valor <= 0 || venda <= 0 || n <= 0) {
+        document.getElementById("resultado").innerHTML = "<p>Preencha corretamente todos os campos.</p>";
+        return;
+      }
+
+      const parcela = (valor * juros) / (1 - Math.pow(1 + juros, -n));
+      const totalPago = parcela * n;
+      const lucro = venda - totalPago;
+      const margem = (lucro / venda) * 100;
+
+      document.getElementById("resultado").innerHTML = `
+        <p><strong>🧾 Simulação:</strong></p>
+        <p>Parcela fixa: <strong>R$ ${parcela.toFixed(2)}</strong> (${n}x)</p>
+        <p>Total pago com financiamento: R$ ${totalPago.toFixed(2)}</p>
+        <p>Valor de venda: R$ ${venda.toFixed(2)}</p>
+        <p><strong>Lucro líquido:</strong> R$ ${lucro.toFixed(2)}</p>
+        <p><strong>📈 Margem de lucro:</strong> ${margem.toFixed(2)}%</p>
+      `;
+    }
+  </script>
+</body>
+</html>
