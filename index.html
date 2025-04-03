@@ -39,7 +39,7 @@
     .logo {
       display: block;
       margin: 0 auto 10px auto;
-      max-height: 100px;
+      max-height: 150px;
     }
     h1 {
       text-align: center;
@@ -79,6 +79,7 @@
     @media (max-width: 600px) {
       body { font-size: 18px; }
       h1 { font-size: 24px; }
+      .logo { max-height: 100px; }
     }
   </style>
 </head>
@@ -105,6 +106,7 @@
   </label>
 
   <button onclick="calcular()">Calcular</button>
+  <button onclick="compartilharWhatsApp()">📲 Compartilhar no WhatsApp</button>
   <button onclick="window.print()">📄 Exportar PDF</button>
 
   <div id="resultado"></div>
@@ -119,32 +121,46 @@
       document.body.classList.add("dark");
     }
 
+    let mensagemWp = "";
+
     function calcular() {
       const valor = parseFloat(document.getElementById("valor").value);
       const venda = parseFloat(document.getElementById("venda").value);
       const n = parseInt(document.getElementById("parcelas").value);
       const juros = 0.085;
+      const iof = 0.011;
 
       if (!valor || !venda || valor <= 0 || venda <= 0 || n <= 0) {
         document.getElementById("resultado").innerHTML = "<p>Preencha corretamente todos os campos.</p>";
         return;
       }
 
-      const parcela = (valor * juros) / (1 - Math.pow(1 + juros, -n));
+      const valorComIOF = valor * (1 + iof);
+      const parcela = (valorComIOF * juros) / (1 - Math.pow(1 + juros, -n));
       const totalPago = parcela * n;
       const lucro = venda - totalPago;
       const margem = (lucro / venda) * 100;
 
+      mensagemWp = `🧾 *Simulação Sourev*:\nParcela: R$ ${parcela.toFixed(2)} (${n}x)\nTotal pago: R$ ${totalPago.toFixed(2)}\nLucro líquido: R$ ${lucro.toFixed(2)}\nMargem: ${margem.toFixed(2)}%`;
+
       document.getElementById("resultado").innerHTML = `
         <p><strong>🧾 Simulação:</strong></p>
         <p>Parcela fixa: <strong>R$ ${parcela.toFixed(2)}</strong> (${n}x)</p>
-        <p>Total pago com financiamento: R$ ${totalPago.toFixed(2)}</p>
+        <p>Total pago com financiamento + IOF: R$ ${totalPago.toFixed(2)}</p>
         <p>Valor de venda: R$ ${venda.toFixed(2)}</p>
         <p><strong>Lucro líquido:</strong> R$ ${lucro.toFixed(2)}</p>
         <p><strong>📈 Margem de lucro:</strong> ${margem.toFixed(2)}%</p>
       `;
     }
+
+    function compartilharWhatsApp() {
+      if (!mensagemWp) {
+        alert("Realize a simulação primeiro.");
+        return;
+      }
+      const url = "https://wa.me/?text=" + encodeURIComponent(mensagemWp);
+      window.open(url, "_blank");
+    }
   </script>
 </body>
 </html>
-
