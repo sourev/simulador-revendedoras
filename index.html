@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <title>Simulador - Lucro Revendedora SOUREV</title>
+  <title>Simulador - Margem de Lucro Revendedora SOUREV</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     :root {
@@ -114,7 +114,7 @@
   <button onclick="window.print()">📄 Exportar PDF</button>
 
   <div id="resultado"></div>
-  <canvas id="grafico" width="400" height="300"></canvas>
+  <canvas id="graficoPizza" width="400" height="300"></canvas>
 
   <script>
     function toggleDarkMode() {
@@ -158,28 +158,27 @@
         <p><strong>📈 Margem sobre custo total:</strong> ${margem.toFixed(2)}%</p>
       `;
 
-      // Atualiza gráfico
-      const ctx = document.getElementById('grafico').getContext('2d');
+      // Gráfico tipo pizza (doughnut)
+      const ctx = document.getElementById('graficoPizza').getContext('2d');
       if (chartInstance) chartInstance.destroy();
       chartInstance = new Chart(ctx, {
-        type: 'bar',
+        type: 'doughnut',
         data: {
-          labels: ['Financiado c/ IOF', 'Total Pago', 'Lucro Líquido', 'Valor de Venda'],
+          labels: ['Lucro Líquido', 'Custo Total (com IOF e juros)'],
           datasets: [{
-            label: 'Valores em R$',
-            data: [
-              valorComIOF.toFixed(2),
-              totalPago.toFixed(2),
-              lucro.toFixed(2),
-              venda.toFixed(2)
-            ],
-            backgroundColor: ['#6c5ce7', '#0984e3', '#00b894', '#fdcb6e']
+            data: [lucro, totalPago],
+            backgroundColor: ['#00b894', '#d63031']
           }]
         },
         options: {
           responsive: true,
-          scales: {
-            y: { beginAtZero: true }
+          plugins: {
+            legend: {
+              position: 'bottom',
+              labels: {
+                color: getComputedStyle(document.body).getPropertyValue('--text')
+              }
+            }
           }
         }
       });
