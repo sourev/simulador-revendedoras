@@ -2,7 +2,8 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <title>Simulador - Margem de Lucro Revendedora SOUREV</title>
+  <title>Simulador - Lucro Revendedora SOUREV</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     :root {
       --bg: #f9f9f9;
@@ -76,6 +77,9 @@
       border-radius: 5px;
       text-align: center;
     }
+    canvas {
+      margin-top: 30px;
+    }
     @media (max-width: 600px) {
       body { font-size: 18px; }
       h1 { font-size: 24px; }
@@ -110,6 +114,7 @@
   <button onclick="window.print()">📄 Exportar PDF</button>
 
   <div id="resultado"></div>
+  <canvas id="grafico" width="400" height="300"></canvas>
 
   <script>
     function toggleDarkMode() {
@@ -122,6 +127,7 @@
     }
 
     let mensagemWp = "";
+    let chartInstance = null;
 
     function calcular() {
       const valor = parseFloat(document.getElementById("valor").value);
@@ -139,7 +145,7 @@
       const parcela = (valorComIOF * juros) / (1 - Math.pow(1 + juros, -n));
       const totalPago = parcela * n;
       const lucro = venda - totalPago;
-      const margem = (lucro / totalPago) * 100; // 🔁 Corrigido: margem sobre o custo total
+      const margem = (lucro / totalPago) * 100;
 
       mensagemWp = `🧾 *Simulação Sourev*:\nParcela: R$ ${parcela.toFixed(2)} (${n}x)\nTotal pago: R$ ${totalPago.toFixed(2)}\nLucro líquido: R$ ${lucro.toFixed(2)}\nMargem: ${margem.toFixed(2)}%`;
 
@@ -151,6 +157,32 @@
         <p><strong>Lucro líquido:</strong> R$ ${lucro.toFixed(2)}</p>
         <p><strong>📈 Margem sobre custo total:</strong> ${margem.toFixed(2)}%</p>
       `;
+
+      // Atualiza gráfico
+      const ctx = document.getElementById('grafico').getContext('2d');
+      if (chartInstance) chartInstance.destroy();
+      chartInstance = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['Financiado c/ IOF', 'Total Pago', 'Lucro Líquido', 'Valor de Venda'],
+          datasets: [{
+            label: 'Valores em R$',
+            data: [
+              valorComIOF.toFixed(2),
+              totalPago.toFixed(2),
+              lucro.toFixed(2),
+              venda.toFixed(2)
+            ],
+            backgroundColor: ['#6c5ce7', '#0984e3', '#00b894', '#fdcb6e']
+          }]
+        },
+        options: {
+          responsive: true,
+          scales: {
+            y: { beginAtZero: true }
+          }
+        }
+      });
     }
 
     function compartilharWhatsApp() {
