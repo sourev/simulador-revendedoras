@@ -139,17 +139,17 @@
       const parcela = (valorComIOF * juros) / (1 - Math.pow(1 + juros, -n));
       const totalPago = parcela * n;
       const lucro = venda - totalPago;
-      const margem = (lucro / venda) * 100;
+      const margem = (lucro / totalPago) * 100; // 🔁 Corrigido: margem sobre o custo total
 
       mensagemWp = `🧾 *Simulação Sourev*:\nParcela: R$ ${parcela.toFixed(2)} (${n}x)\nTotal pago: R$ ${totalPago.toFixed(2)}\nLucro líquido: R$ ${lucro.toFixed(2)}\nMargem: ${margem.toFixed(2)}%`;
 
       document.getElementById("resultado").innerHTML = `
         <p><strong>🧾 Simulação:</strong></p>
         <p>Parcela fixa: <strong>R$ ${parcela.toFixed(2)}</strong> (${n}x)</p>
-        <p>Total pago com financiamento + IOF: R$ ${totalPago.toFixed(2)}</p>
+        <p>Total pago com IOF e juros: R$ ${totalPago.toFixed(2)}</p>
         <p>Valor de venda: R$ ${venda.toFixed(2)}</p>
         <p><strong>Lucro líquido:</strong> R$ ${lucro.toFixed(2)}</p>
-        <p><strong>📈 Margem de lucro:</strong> ${margem.toFixed(2)}%</p>
+        <p><strong>📈 Margem sobre custo total:</strong> ${margem.toFixed(2)}%</p>
       `;
     }
 
