@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Simulador de Parcelas - Revendedora SOUREV</title>
+  <style>
+    :root {
+      --bg: #f9f9f9;
+      --text: #111;
+      --primary: #1d3557;
+      --accent: #457b9d;
+    }
+    body.dark {
+      --bg: #121212;
+      --text: #fff;
+    }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Segoe UI', sans-serif;
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      position: relative;
+    }
+    .mode-toggle {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: var(--accent);
+      color: white;
+      border: none;
+      font-size: 14px;
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      cursor: pointer;
+    }
+    .logo {
+      display: block;
+      margin: 0 auto 10px auto;
+      max-height: 100px;
+    }
+    h1 {
+      text-align: center;
+      color: var(--primary);
+      font-size: 22px;
+      margin-top: 0;
+    }
+    label {
+      font-weight: bold;
+      display: block;
+      margin-top: 15px;
+    }
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      font-size: 16px;
+    }
+    button {
+      background: var(--accent);
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 15px;
+      width: 100%;
+      font-size: 16px;
+    }
+    #resultado {
+      margin-top: 30px;
+      background: #e9ecef;
+      padding: 20px;
+      border-radius: 5px;
+      text-align: center;
+    }
+    @media (max-width: 600px) {
+      body { font-size: 18px; }
+      h1 { font-size: 24px; }
+    }
+  </style>
+</head>
+<body>
+  <button class="mode-toggle" onclick="toggleDarkMode()">🌓</button>
+  <img src="sourev-logo.png" alt="Sourev Logo" class="logo" />
+  <h1>Simulador de Parcelas<br>Revendedora SOUREV</h1>
