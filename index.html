@@ -84,5 +84,53 @@
 </head>
 <body>
   <button class="mode-toggle" onclick="toggleDarkMode()">🌓</button>
-  <img src="sourev-logo.png" alt="Sourev Logo" class="logo" />
+  <img src="https://i.ibb.co/kBPr3v5/sourev-logo.png" alt="Sourev Logo" class="logo" />
   <h1>Simulador de Parcelas<br>Revendedora SOUREV</h1>
+
+  <label>Valor da Compra (R$):
+    <input type="number" id="valor" placeholder="Ex: 1000" />
+  </label>
+
+  <label>Número de Parcelas:
+    <select id="parcelas">
+      <option value="1">1x</option>
+      <option value="2">2x</option>
+      <option value="3">3x</option>
+    </select>
+  </label>
+
+  <button onclick="calcular()">Calcular Parcela</button>
+  <button onclick="window.print()">📄 Exportar PDF</button>
+
+  <div id="resultado"></div>
+
+  <script>
+    function toggleDarkMode() {
+      document.body.classList.toggle("dark");
+      localStorage.setItem("modo", document.body.classList.contains("dark") ? "dark" : "light");
+    }
+
+    if (localStorage.getItem("modo") === "dark") {
+      document.body.classList.add("dark");
+    }
+
+    function calcular() {
+      const valor = parseFloat(document.getElementById("valor").value);
+      const n = parseInt(document.getElementById("parcelas").value);
+      const juros = 0.085;
+
+      if (!valor || valor <= 0 || n <= 0) {
+        document.getElementById("resultado").innerHTML = "<p>Preencha corretamente os campos.</p>";
+        return;
+      }
+
+      const parcela = (valor * juros) / (1 - Math.pow(1 + juros, -n));
+      document.getElementById("resultado").innerHTML = `
+        <p><strong>🧾 Simulação:</strong></p>
+        <p>Parcela fixa: <strong>R$ ${parcela.toFixed(2)}</strong> (${n}x)</p>
+        <p>Taxa: 8,5% a.m.</p>
+      `;
+    }
+  </script>
+</body>
+</html>
